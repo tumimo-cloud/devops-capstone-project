@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: accounts
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: accounts
+  template:
+    metadata:
+      labels:
+        app: accounts
+    spec:
+      containers:
+      - name: accounts
+        image: your-image-name
+        env:
+        - name: DATABASE_HOST
+          value: "postgresql"
+        - name: DATABASE_NAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: postgresql-database
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: postgresql-username
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: postgresql-password
